@@ -1,0 +1,23 @@
+name: SimpDDB - release
+
+on:
+  push:
+    branches: 
+      - master
+
+jobs:
+  release:
+    name: SimpDDB - publish
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2.4.0
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.5.1
+        with:
+          node-version: 14
+          registry-url: https://registry.npmjs.org
+      - name: publish
+        run: npm publish --access public
+        env: 
+          NODE_AUTH_TOKEN: ${{secrets.NPM_AUTH_TOKEN}}
