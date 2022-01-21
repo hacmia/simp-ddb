@@ -1,11 +1,11 @@
 # About SimpDDB 
 
-<p>I found of DyanmoDB's rich features offered, my usage boiled down to a handful of operations and for the most part did not need most of what is there to offer. I also feel DynamoDB is a wonderful service, however, I also wanted to offer a simpler way of executing DynamoDB's operations. And with this the simpDDB was born.</p>
-<p>SimpDDB is targeted for DynamoDB newbies or for those who just want to peform simple operations in a simple way. This doesn't rule out that the features not here do not matter, it's just not simple.</p>
+<p>I found of DyanmoDB's rich offering, my usage boiled down to a handful of operations, which for the most part did what I need it to for my day to day.  I also wanted to offer a simpler way of executing DynamoDB's operations. And with this the simpDDB was born.</p>
+<p>SimpDDB is targeted for DynamoDB newbies or for those who just want to peform simple operations in a simple way.</p>
 
 
 ## Main Features
-* Intended so a JavaScript caveperson can use it - A little bit of JSON knowledge is all you need
+* Intended so a JavaScript caveperson can use it - A little bit of JSON "know how" is all you need
 * Intended for a very basic set of DynamoDB operations
   * get - key + sort will return one object
   * put - will overwrite the item with a new item
