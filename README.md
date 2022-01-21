@@ -1,16 +1,32 @@
 # About SimpDDB 
-A simple DynamoDB wrapper module. Targeted for people who are just want to do simple stuff, in a simple way on DynamoDB.
-<br><br>
-## What you should know...
-All ddb tables must have a composite key of "key" as the primary and "sort" as the sort key. 
-<br><br><br>
-# How to use this 
+
+<p>I found of DyanmoDB's rich features offered, my usage boiled down to a handful of operations and for the most part did not need most of what is there to offer. I also feel DynamoDB is a wonderful service, however, I also wanted to offer a simpler way of executing DynamoDB's operations. And with this the simpDDB was born.</p>
+<p>SimpDDB is targeted for DynamoDB newbies or for those who just want to peform simple operations in a simple way. This doesn't rule out that the features not here do not matter, it's just not simple.</p>
+
+
+## Main Features
+* Intended so a JavaScript caveperson can use it - A little bit of JSON knowledge is all you need
+* Intended for a very basic set of DynamoDB operations
+  * get - key + sort will return one object
+  * put - will overwrite the item with a new item
+  * del - will delete the item. key + sort is required, any other attributes are ignored and will not affect the operation
+  * query - uses key condition experession "begins_with", key + sort is required, any other attributes are ignored and will not affect the operation.
+  * batch - processes in batches of 25, if a batch fails only the requests in that batch group fail.
+* Intended to bring a smile 
+
+## Other info
+* All ddb tables must have "key" and "sort" as the composite key. 
+* All item attributes are inserted as strings into ddb. 
+* Currently no other DynamoDB features are supported.
+
+# How to use SimpDDB 
+
 ## Require it 
 ```javascript
 const SimpDDB = require("simp-ddb");
 ```
 
-## Mandatory fields
+## Gotta have these
 ```javascript
 const TableName = "YOUR_TABLE_NAME";
 const region = "us-east-1";
@@ -36,14 +52,24 @@ const simpDDB = new SimpDDB(clientParams);
 ```
 
 ## Example for: "get", "put", "del", "upd", and "query" operations 
+
 ```javascript
 (async function (){
-  await simpDDB.snd({
+  await simpDDB.snd(({
     "send":"put",
     "TableName":TableName,
     "key":"test",
-    "sort":"test",
-    "anotherAttr":"anotherValue"
+    "sort":"test0",
+    "anotherAttr":"anotherValues",
+    "anotherAttrAdded":"anotherValuesAdded",
+    "zeroNum":0,
+    "zeroStr":"0",
+    "trueBool":true,
+    "trueStr":"true",
+    "falseBool":false,
+    "falseStr":"false",
+    "attribute":{"one":1,"bool":false},
+    "dateIso": new Date().toISOString()
   })
   .then((data)=>{
     console.log(data);
@@ -60,16 +86,18 @@ batchAction only supports "del", "put" operations
 (async function (){
   const arrList = [
     {
-      "batchAction": "del",
-      "key": "test",
-      "sort": "test",
-      "attribute":{"one":1,"bool":false},
-      "falseStr":"false",
-      "falseBool":false,
-      "trueStr":"true",
+      "batchAction":"put",
+      "key":"test",
+      "sort":"test1",
+      "anotherAttr":"anotherValues",
+      "anotherAttrAdded":"anotherValuesAdded",
+      "zeroNum":0,
+      "zeroStr":"0",
       "trueBool":true,
-      "ZeroStr": "0",
-      "ZeroNum": 0,
+      "trueStr":"true",
+      "falseBool":false,
+      "falseStr":"false",
+      "attribute":{"one":1,"bool":false},
       "dateIso": new Date().toISOString()
     },
     {
@@ -81,21 +109,6 @@ batchAction only supports "del", "put" operations
       "batchAction": "del",
       "key": "test",
       "sort": "test3"
-    },
-    {
-      "batchAction": "del",
-      "key": "test",
-      "sort": "test4"
-    },
-    {
-      "batchAction": "del",
-      "key": "test",
-      "sort": "test5"
-    },
-    {
-      "batchAction": "del",
-      "key": "test",
-      "sort": "test6"
     }
   ];
   

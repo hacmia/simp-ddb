@@ -239,7 +239,7 @@ class SimpDDB extends DynamoDBClient {
       command = {"DeleteRequest":{"Key":marshall(_v)}};
     } else if (batchAction ==="put") {
       delete _v.batchAction;
-      command = {"PutRequest":{"Item":marshall(_v)}};
+      command = {"PutRequest":{"Item":marshall(this.#remove_blacklisted_attributes(_v))}};
     };
     if (command) {
       this.#batchArr.push(command);
