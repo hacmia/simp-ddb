@@ -34,15 +34,15 @@ class SimpDDB extends DynamoDBClient {
 
   #remove_blacklisted_attributes (_p) {
     const ret={};
-    for (const [key, value] of Object.entries(_p)) {
+    Object.entries(_p).forEach(([key,value])=>{
       const k = (this.#blackListedAttr.includes(key)) ? "": key;
       const v = (this.#blackListedAttr.includes(key)) ? "": value;
       if (k) ret[k] = this.#validate_type(v);
-    };
+    });
     return ret;
   };
 
-  #keep_del_attributes (_p) {
+  #composite_key_attributes_only (_p) {
     const ret={};
     Object.entries(_p).forEach(([key,value])=> {
       if (this.#deleteAttr.includes(key)){
@@ -55,7 +55,7 @@ class SimpDDB extends DynamoDBClient {
   #get(_p) {
     return new GetItemCommand({
       "TableName": _p.TableName,
-      "Key": marshall(this.#remove_blacklisted_attributes(_p)),
+      "Key": marshall(this.#composite_key_attributes_only(_p)),
       "ReturnValues": "NONE",
       "ReturnConsumedCapacity": "TOTAL",
       "ReturnItemCollectionMetrics": "SIZE",
@@ -76,7 +76,7 @@ class SimpDDB extends DynamoDBClient {
   #del(_p) {
     return new DeleteItemCommand({
       TableName: _p.TableName,
-      Key: marshall(this.#keep_del_attributes(_p)),
+      Key: marshall(this.#composite_key_attributes_only(_p)),
       ConditionExpression: "attribute_exists(#sort)",
       ExpressionAttributeNames: { "#sort": "sort"}
     });
@@ -93,7 +93,8 @@ class SimpDDB extends DynamoDBClient {
       "ReturnValues":"ALL_NEW",
       "ReturnConsumedCapacity": "TOTAL"
     };
-    for (const [key, value] of Object.entries(_p)) {
+
+    Object.entries(_p).forEach(([key,value])=>{
       if (key === "TableName" && value) {
         params.TableName = value;
       } else if (key === "key" || key === "sort") { 
@@ -106,7 +107,8 @@ class SimpDDB extends DynamoDBClient {
           params.ExpressionAttributeValues[`:${key}`] = this.#validate_type(value);
         };
       };
-    };
+    });
+
     if (params.Key) { 
       params.Key = marshall(params.Key);
     };
