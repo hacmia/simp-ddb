@@ -8,8 +8,18 @@
   },
   "author": "hugocampano@gmail.com",
   "license": "ISC",
+  "repository": "hacmia/simp-ddb",
   "dependencies": {
     "@aws-sdk/client-dynamodb": "^3.47.0",
     "@aws-sdk/util-dynamodb": "^3.47.1"
-  }
+  },
+  "keywords": [
+    "simple",
+    "dynamodb",
+    "ddb",
+    "simp",
+    "npm",
+    "package",
+    "hacmia"
+  ]
 }
