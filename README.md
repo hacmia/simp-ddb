@@ -51,11 +51,12 @@ const simpDDB = new SimpDDB(clientParams);
 
 ```
 
-## Example for: "get", "put", "del", "upd", and "query" operations 
+## Example put operation
 
 ```javascript
 (async function (){
-  await simpDDB.snd(({
+  //put will override existing items. If you want to remove an attribute from an item use put
+  await simpDDB.snd({
     "send":"put",
     "TableName":TableName,
     "key":"test",
@@ -79,16 +80,105 @@ const simpDDB = new SimpDDB(clientParams);
   });
 })();
 ```
+## Example upd operation
+```javascript
+(async function (){
+  // upd will create or update existing items. It will add new attributes or 
+  // change the value of existing attributes, but, it will not delete attributes
+  await simpDDB.snd({
+    "send":"upd",
+    "TableName":TableName,
+    "key":"test",
+    "sort":"test1",
+    "anotherAttr":"anotherValues",
+    "anotherAttrAdded":"anotherValuesAdded",
+    "zeroNum":0,
+    "zeroStr":"0",
+    "trueBool":true,
+    "trueStr":"true",
+    "falseBool":false,
+    "falseStr":"false",
+    "attribute":{"one":1,"bool":false},
+    "dateIso": new Date().toISOString()
+  })
+  .then((data)=>{
+    console.log(data);
+  })
+  .catch((err)=>{
+    console.log(err);
+  });
+})();
+```
+## Example get operation
+```javascript
+(async function (){
+  // get will return one item 
+  await simpDDB.snd({
+    "send":"get",
+    "TableName":TableName,
+    "key":"test",
+    "sort":"test0",
+    "consistent": true //supported by query and get operations
+  })
+  .then((data)=>{
+    console.log(data);
+  })
+  .catch((err)=>{
+    console.log(err);
+  });
+})();
+```
+## Example query operation
+```javascript
+(async function (){
+  //query will return an array of items
+  await simpDDB.snd({
+    "send":"query",
+    "TableName":TableName,
+    "key":"test",
+    "sort":"test",
+    "condition":"begins_with",
+    "consistent": true //supported by query and get operations
+  })
+  .then((data)=>{
+    console.log(data);
+  })
+  .catch((err)=>{
+    console.log(err);
+  });
+})();
+```
+## Example del operation
+```javascript
+(async function (){
+  //query will return an array of items
+  await simpDDB.snd({
+    "send":"del",
+    "TableName":TableName,
+    "key":"test",
+    "sort":"test0"
+  })
+  .then((data)=>{
+    console.log(data);
+  })
+  .catch((err)=>{
+    console.log(err);
+  });
+})();
+```
 
-## Example for: "batch"
+## Example for: "batch" operation
 batchAction only supports "del", "put" operations
  ```javascript
 (async function (){
+  //batch put or del
+  //batchAction only supports "del", "put" operations
+  //batches are processed in batch groups of 25
   const arrList = [
     {
       "batchAction":"put",
       "key":"test",
-      "sort":"test1",
+      "sort":"test2",
       "anotherAttr":"anotherValues",
       "anotherAttrAdded":"anotherValuesAdded",
       "zeroNum":0,
@@ -101,22 +191,15 @@ batchAction only supports "del", "put" operations
       "dateIso": new Date().toISOString()
     },
     {
-      "batchAction": "del",
-      "key": "test",
-      "sort": "test2"
-    },
-    {
-      "batchAction": "del",
-      "key": "test",
-      "sort": "test3"
+      "batchAction":"del",
+      "key":"test",
+      "sort":"test1"
     }
   ];
-  
   await simpDDB.snd({
     "send":"batch",
     "TableName":TableName,
     "batchList": arrList
   });
-
 })();
 ```
