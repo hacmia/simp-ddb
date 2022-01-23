@@ -24,7 +24,10 @@
     "hacmia",
     "aws",
     "simpddb",
-    "simp-ddb"
+    "simp-ddb",
+    "simple-dynamodb",
+    "nosql",
+    "simple-nosql"
   ],
   "devDependencies": {
     "standard-version": "^9.3.2"
