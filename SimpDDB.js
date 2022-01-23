@@ -17,19 +17,19 @@ class SimpDDB extends DynamoDBClient {
   #errorArr = [];
 
   #settings = {
-    storeAsStrings : true
+    storeAsStrings : "true"
   };
 
   settings(_p) {
     if (_p) {
       Object.entries(_p).forEach(([key,val]) => {
-        this.#settings[key] = val;
+        this.#settings[key] = (val) ? val.toLocaleString() : "";
       })
     };
   };
 
   #convert_type_val_to_str(val) {
-    if (!this.#settings.storeAsStrings && typeof val !== "undefined" && typeof val !== "string") {
+    if ((this.#settings.storeAsStrings !== "true") && typeof val !== "undefined" && typeof val !== "string" && val !== null) {
       return val;
     } else if (typeof val === "boolean") {
       return val.toString();
@@ -40,7 +40,7 @@ class SimpDDB extends DynamoDBClient {
     } else if (typeof val === "string") {
       return (val === "undefined") ? "" : val;
     } else if (typeof val === "object") {
-      return JSON.stringify(val);
+      return (val === null) ? "" : JSON.stringify(val);
     } else {
       return val;
     }

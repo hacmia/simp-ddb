@@ -19,6 +19,8 @@
 ## Other info
 * All ddb tables must have "key" and "sort" as the composite key. 
 * All item attributes are inserted as strings into ddb by default, but, can be overwritten to store them as intended.
+* undefined or "undefined" is stored as an empty string.
+* null is stored as an empty string
 * Currently no other DynamoDB features are supported.
 
 # How to use SimpDDB 
@@ -86,7 +88,10 @@ Currently storeAsStrings is the only setting available. But, if any others are a
     "falseBool":false,
     "falseStr":"false",
     "attribute":{"one":1,"bool":false},
-    "dateIso": new Date().toISOString()
+    "dateIso": new Date().toISOString(),
+    "undefinedVal":undefined,
+    "undefinedStr":"undefined",
+    "nullVal": null
   })
   .then((data)=>{
     console.log(data);
@@ -115,7 +120,10 @@ Currently storeAsStrings is the only setting available. But, if any others are a
     "falseBool":false,
     "falseStr":"false",
     "attribute":{"one":1,"bool":false},
-    "dateIso": new Date().toISOString()
+    "dateIso": new Date().toISOString(),
+    "undefinedVal":undefined,
+    "undefinedStr":"undefined",
+    "nullVal": null
   })
   .then((data)=>{
     console.log(data);
@@ -204,7 +212,10 @@ batchAction only supports "del", "put" operations
       "falseBool":false,
       "falseStr":"false",
       "attribute":{"one":1,"bool":false},
-      "dateIso": new Date().toISOString()
+      "dateIso": new Date().toISOString(),
+      "undefinedVal":undefined,
+      "undefinedStr":"undefined",
+      "nullVal": null
     },
     {
       "batchAction":"del",
