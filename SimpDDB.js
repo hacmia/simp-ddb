@@ -16,15 +16,29 @@ class SimpDDB extends DynamoDBClient {
   #rslt = [];
   #errorArr = [];
 
-  #validate_type(val) {
-    if (typeof val === "boolean") {
+  #settings = {
+    storeAsStrings : true
+  };
+
+  settings(_p) {
+    if (_p) {
+      Object.entries(_p).forEach(([key,val]) => {
+        this.#settings[key] = val;
+      })
+    };
+  };
+
+  #convert_type_val_to_str(val) {
+    if (!this.#settings.storeAsStrings && typeof val !== "undefined" && typeof val !== "string") {
+      return val;
+    } else if (typeof val === "boolean") {
       return val.toString();
     } else if (typeof val === "number") {
       return val.toString();
     } else if (typeof val === "undefined") {
       return "";
     } else if (typeof val === "string") {
-      return val;
+      return (val === "undefined") ? "" : val;
     } else if (typeof val === "object") {
       return JSON.stringify(val);
     } else {
@@ -37,7 +51,7 @@ class SimpDDB extends DynamoDBClient {
     Object.entries(_p).forEach(([key,value])=>{
       const k = (this.#blackListedAttr.includes(key)) ? "": key;
       const v = (this.#blackListedAttr.includes(key)) ? "": value;
-      if (k) ret[k] = this.#validate_type(v);
+      if (k) ret[k] = this.#convert_type_val_to_str(v);
     });
     return ret;
   };
@@ -104,7 +118,7 @@ class SimpDDB extends DynamoDBClient {
         if (k) {
           ueArr.push(` #${key} = :${key}`);
           params.ExpressionAttributeNames[`#${key}`] = key;
-          params.ExpressionAttributeValues[`:${key}`] = this.#validate_type(value);
+          params.ExpressionAttributeValues[`:${key}`] = this.#convert_type_val_to_str(value);
         };
       };
     });
@@ -212,7 +226,6 @@ class SimpDDB extends DynamoDBClient {
       return data;
     })
     .catch((err)=>{
-      // console.log("put:",err.message,_p);
       return err;
     });
   };
@@ -261,7 +274,6 @@ class SimpDDB extends DynamoDBClient {
         params.RequestItems[TableName] = temparray;
         await this.send(new BatchWriteItemCommand(params))
         .then((data)=> {
-          //console.log(data);
           this.#rslt.push(`${i}-${i+chunk} `);
         })
         .catch((err)=> {

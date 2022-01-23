@@ -12,11 +12,13 @@
   * del - will delete the item. key + sort is required, any other attributes are ignored and will not affect the operation
   * query - uses key condition experession "begins_with", key + sort is required, any other attributes are ignored and will not affect the operation.
   * batch - processes in batches of 25, if a batch fails only the requests in that batch group fail.
+* Extends [DynamoDB Client - AWS SDK for JavaScript v3](https://docs.aws.amazon.com/AWSJavaScriptSDK/v3/latest/clients/client-dynamodb/index.html)
+* Lightweight
 * Intended to bring a smile 
 
 ## Other info
 * All ddb tables must have "key" and "sort" as the composite key. 
-* All item attributes are inserted as strings into ddb. 
+* All item attributes are inserted as strings into ddb by default, but, can be overwritten to store them as intended.
 * Currently no other DynamoDB features are supported.
 
 # How to use SimpDDB 
@@ -49,6 +51,20 @@ const clientParams = {
 
 const simpDDB = new SimpDDB(clientParams);
 
+```
+## Settings
+Currently storeAsStrings is the only setting available. But, if any others are added, you'll find it here.
+```javascript 
+  //By default, SimpDDB stores all item attributes as strings. To store as primitive and object values, set the following command set to false.
+  simpDDB.settings({
+    "storeAsStrings": false
+  });
+```
+```javascript 
+  //If set to true it will store as strings again.
+  simpDDB.settings({
+    "storeAsStrings": true
+  });
 ```
 
 ## Example put operation
