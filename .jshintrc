@@ -1,0 +1,13 @@
+{
+  "curly": true,
+  "eqeqeq": true,
+  "nocomma": true,
+  "latedef": false,
+  "evil": true,
+  "noarg": true,
+  "undef": true,
+  "eqnull": true,
+  "node": true,
+  "esversion": 10,
+  "unused": "strict"
+}

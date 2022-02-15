@@ -27,7 +27,14 @@
     "simp-ddb",
     "simple-dynamodb",
     "nosql",
-    "simple-nosql"
+    "simple-nosql",
+    "no-sql",
+    "aws-sdk",
+    "aws sdk",
+    "database",
+    "dynamo",
+    "store",
+    "db"
   ],
   "devDependencies": {
     "standard-version": "^9.3.2"
