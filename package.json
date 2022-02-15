@@ -1,6 +1,6 @@
 {
   "name": "simp-ddb",
-  "version": "1.2.9",
+  "version": "1.2.10",
   "description": "A simple DynamoDB wrapper module. Targeted for people who are just want to do simple stuff, in a simple way on DynamoDB.",
   "main": "app.js",
   "scripts": {
